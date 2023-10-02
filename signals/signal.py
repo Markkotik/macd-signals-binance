@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Literal
 
 import pandas as pd
 
@@ -10,11 +10,13 @@ class AbstractSignal(ABC):
     """
 
     @abstractmethod
-    def detect(self, data: pd.DataFrame) -> Any:
+    def identify_signal(self, data: pd.DataFrame) -> Literal['buy', 'sell', 'none']:
         """
-        Detect a specific signal within the given data.
+        Analyzes the given data, applies necessary signal calculations, and identifies the signal.
 
-        :param data: The data in which to detect the signal.
-        :return: Information about the detected signal.
+        :param data: The data in which to analyze and detect the signal.
+        :return: 'buy' if a buy signal is detected,
+                 'sell' if a sell signal is detected,
+                 'none' otherwise.
         """
         pass
