@@ -1,15 +1,18 @@
 from abc import abstractmethod
+from datetime import datetime
 
 import pandas as pd
 
+from models.signal_model import Signal
 
-class MacdSignal:
+
+class MacdSignal(Signal):
 
     def __init__(self):
         self.data = None
 
     @abstractmethod
-    def identify_signal(self, data: pd.DataFrame) -> str:
+    def identify_signal(self, data: pd.DataFrame) -> Signal:
         """
         Detects MACD crossover signals within the given data.
 
@@ -19,12 +22,16 @@ class MacdSignal:
                  'none' otherwise.
         """
         self.add_macd_lines(data)
+
         if self.is_buy_signal():
-            return 'buy'
+            direction = 'buy'
         elif self.is_sell_signal():
-            return 'sell'
+            direction = 'sell'
         else:
-            return 'none'
+            direction = 'none'
+
+        time = datetime.now().isoformat()
+        return Signal(time=time, indicator_name="MACD", direction=direction)
 
     def add_macd_lines(self, data: pd.DataFrame) -> pd.DataFrame:
         """
