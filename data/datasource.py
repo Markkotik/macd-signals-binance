@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from typing import Any
+
+import pandas as pd
 from decouple import config
 
 
@@ -14,7 +15,7 @@ class DataSource(ABC):
         self.limit: int = config('LIMIT', default=300)
 
     @abstractmethod
-    def get_data(self) -> Any:
+    def get_data(self) -> pd.DataFrame:
         """
         Retrieve data based on the symbol, timeframe, and limit attributes.
 
@@ -30,4 +31,3 @@ class DataSource(ABC):
         :return: True if the connection is active, otherwise False.
         """
         pass
-
