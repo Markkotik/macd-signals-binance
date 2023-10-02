@@ -1,3 +1,5 @@
+from abc import abstractmethod
+
 import pandas as pd
 
 
@@ -6,7 +8,8 @@ class MacdSignal:
     def __init__(self):
         self.data = None
 
-    def detect(self, data: pd.DataFrame) -> str:
+    @abstractmethod
+    def identify_signal(self, data: pd.DataFrame) -> str:
         """
         Detects MACD crossover signals within the given data.
 
