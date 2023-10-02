@@ -1,17 +1,25 @@
 import matplotlib.pyplot as plt
 import pandas as pd
-from datetime import datetime
+
+from models.signal_model import Signal
+from visualisations.visualization import AbstractVisualization
 
 
-class MACDVisualization:
+class MACDVisualization(AbstractVisualization):
 
-    current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    IMAGE_PATH = f'MACD_plot_{current_time}.png'
-
-    def visualize(self, data: pd.DataFrame, signal: str) -> None:
+    def visualize(self, data: pd.DataFrame, signal_model: Signal) -> str:
         """
         Main visualization method to plot MACD and signal lines based on the input data.
+
+        Args:
+            data (pd.DataFrame): The data for visualization.
+            signal_model (Signal): The signal model containing signal details.
+
+        Returns:
+            str: Image path.
         """
+        image_path = self._generate_image_path(signal_model)
+
         # Convert column 'C' to numeric type
         data['C'] = pd.to_numeric(data['C'], errors='coerce')
 
@@ -29,7 +37,7 @@ class MACDVisualization:
         self._plot_macd_data(data, axes[1])
 
         # Mark buy/sell signals on the plot
-        self._mark_signals(data, axes[0], signal)
+        self._mark_signals(data, axes[0], signal_model)
 
         # Adjust axes and legend
         for ax in axes:
@@ -37,7 +45,9 @@ class MACDVisualization:
             ax.legend(loc='upper right')
 
         plt.tight_layout()
-        plt.savefig(self.IMAGE_PATH, bbox_inches='tight')
+        plt.savefig(image_path, bbox_inches='tight')
+
+        return image_path
 
     @staticmethod
     def _check_required_columns(data: pd.DataFrame) -> None:
@@ -84,23 +94,23 @@ class MACDVisualization:
         ax.set_xlabel('Time')
 
     @staticmethod
-    def _mark_signals(data: pd.DataFrame, ax, signal: str) -> None:
+    def _mark_signals(data: pd.DataFrame, ax, signal: Signal) -> None:
         """
         Marks the buy or sell signal on the plot.
         """
-        if signal == "buy":
+        if signal.direction == "buy":
             ax.scatter(data.index[-1], data['C'].iloc[-1], marker='^', color='green', label='Buy Signal', alpha=1,
                        s=100)
             ax.annotate('Buy Signal', (data.index[-1], data['C'].iloc[-1]), textcoords="offset points", xytext=(0, 10),
                         ha='center')
-        elif signal == "sell":
+        elif signal.direction == "sell":
             ax.scatter(data.index[-1], data['C'].iloc[-1], marker='v', color='red', label='Sell Signal', alpha=1,
                        s=100)
             ax.annotate('Sell Signal', (data.index[-1], data['C'].iloc[-1]), textcoords="offset points",
                         xytext=(0, -15), ha='center')
 
     @staticmethod
-    def _adjust_axes(data, ax):
+    def _adjust_axes(data: pd.DataFrame, ax):
         """
         Adjusts the axes for better visualization.
         """
@@ -109,3 +119,8 @@ class MACDVisualization:
         date_range = max_date - min_date
         shift_amount = date_range / 3
         ax.set_xlim(min_date, max_date + shift_amount)
+
+    @staticmethod
+    def _generate_image_path(signal: Signal) -> str:
+        """Generates an image path based on the provided signal."""
+        return f"plots/MACD_plot_{signal.symbol}_{signal.timeframe}_{signal.time}.png"
