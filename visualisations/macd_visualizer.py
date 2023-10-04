@@ -1,3 +1,6 @@
+import os
+from datetime import datetime
+
 import matplotlib.pyplot as plt
 import pandas as pd
 
@@ -33,7 +36,7 @@ class MACDVisualization(AbstractVisualization):
         fig, axes = self._setup_plot()
 
         # Plot price and MACD data
-        self._plot_price_data(data, axes[0])
+        self._plot_price_data(data, axes[0], signal_model)
         self._plot_macd_data(data, axes[1])
 
         # Mark buy/sell signals on the plot
@@ -72,15 +75,15 @@ class MACDVisualization(AbstractVisualization):
         """
         Sets up the main plot for visualization.
         """
-        return plt.subplots(nrows=2, ncols=1, figsize=(14, 8), gridspec_kw={'height_ratios': [2.5, 1]})
+        return plt.subplots(nrows=2, ncols=1, figsize=(10, 6), gridspec_kw={'height_ratios': [2.5, 1]})
 
     @staticmethod
-    def _plot_price_data(data: pd.DataFrame, ax) -> None:
+    def _plot_price_data(data: pd.DataFrame, ax, signal_model: Signal) -> None:
         """
         Plots the price data.
         """
         data['C'].plot(ax=ax, color='blue', label='Close Price')
-        ax.set_title('Price & MACD Visualization')
+        ax.set_title(f'{signal_model.symbol} Price & MACD Visualization')
         ax.set_ylabel('Price')
         ax.set_xlabel('Time')
 
@@ -123,4 +126,15 @@ class MACDVisualization(AbstractVisualization):
     @staticmethod
     def _generate_image_path(signal: Signal) -> str:
         """Generates an image path based on the provided signal."""
-        return f"plots/MACD_plot_{signal.symbol}_{signal.timeframe}_{signal.time}.png"
+
+        # Convert the signal.time string to a datetime object
+        dt = datetime.fromisoformat(signal.time)
+
+        # Format the datetime object in a file-friendly manner
+        formatted_time = dt.strftime('%Y-%m-%d_%H-%M-%S')
+
+        # Ensure 'plots' directory exists
+        if not os.path.exists('plots'):
+            os.makedirs('plots')
+
+        return f"plots/MACD_plot_{signal.symbol}_{signal.timeframe}_{formatted_time}.png"
