@@ -3,6 +3,8 @@
 Welcome to **MACD Signals Binance**! This tool identifies MACD (Moving Average Convergence Divergence) signals on 
 Binance's spot market. It notifies you on Telegram of potential buy/sell opportunities with a MACD chart.
 
+![img.png](img.png)
+
 ## Prerequisites
 
 - Python ~3.10
