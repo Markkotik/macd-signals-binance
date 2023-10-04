@@ -3,6 +3,7 @@ import time
 from data.binance_spot import BinanceSpotDataSource
 from notifications.telegram import TelegramNotifier
 from signals.macd import MacdSignal
+from utils.time_helpers import timeframe_to_seconds
 from visualisations.macd_visualizer import MACDVisualization
 
 if __name__ == '__main__':
@@ -24,4 +25,4 @@ if __name__ == '__main__':
 
             print(signal)
 
-        time.sleep(60)
+        time.sleep(timeframe_to_seconds())
