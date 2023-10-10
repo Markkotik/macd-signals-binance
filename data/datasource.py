@@ -22,12 +22,3 @@ class DataSource(ABC):
         :return: DataFrame with the data.
         """
         pass
-
-    @abstractmethod
-    def connection_status(self) -> bool:
-        """
-        Check the connection status with the data source.
-
-        :return: True if the connection is active, otherwise False.
-        """
-        pass

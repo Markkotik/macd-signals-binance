@@ -20,15 +20,3 @@ class BinanceSpotDataSource(DataSource):
         tohlc_data = pd.DataFrame(raw_data).iloc[:, :5]
         tohlc_data.columns = list('TOHLC')
         return tohlc_data
-
-    def connection_status(self) -> bool:
-        """
-        Checks the connection status with the Binance server using the server time.
-
-        :return: True if the connection is active, otherwise False.
-        """
-        try:
-            self.client.time()
-            return True
-        except:
-            return False

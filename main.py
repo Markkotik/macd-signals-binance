@@ -10,6 +10,7 @@ if __name__ == '__main__':
 
     cl = BinanceSpotDataSource()
     macd_signal = MacdSignal()
+    visualization = MACDVisualization()
     messenger = TelegramNotifier()
 
     print('Bot started')
@@ -18,8 +19,7 @@ if __name__ == '__main__':
         df = cl.get_data()
         signal = macd_signal.identify_signal(df)
 
-        if signal.direction != 'none':
-            visualization = MACDVisualization()
+        if signal:
             image_path = visualization.visualize(df, signal)
             messenger.send(signal, image_path)
 
