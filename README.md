@@ -1,9 +1,12 @@
 # MACD Signals Binance
 
-Welcome to **MACD Signals Binance**! This tool identifies MACD (Moving Average Convergence Divergence) signals on 
-Binance's spot market. It notifies you on Telegram of potential buy/sell opportunities with a MACD chart.
+Welcome to **MACD Signals Binance**. This tool detects MACD (Moving Average Convergence Divergence) signals for Binance's spot market.
 
-![img.png](img.png)
+In addition to identifying potential buy/sell opportunities based on the MACD chart, the system provides three take-profit levels and a designated stop-loss level.
+
+Notifications are promptly sent via Telegram.
+
+![img.png](imgs_for_readme%2Fimg.png)
 
 ## Prerequisites
 

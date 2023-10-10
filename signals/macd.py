@@ -73,12 +73,14 @@ class MacdSignal(Signal):
         else:
             raise ValueError(f"Unexpected direction value: {direction}")
 
+        round_decimal_places = int(config('ROUND_DECIMAL_PLACES'))
+
         return {
-            "stop_loss": stop_loss,
+            "stop_loss": round(stop_loss, round_decimal_places),
             "entry_price": entry_price,
-            "take_profit_1": take_profits[0],
-            "take_profit_2": take_profits[1],
-            "take_profit_3": take_profits[2]
+            "take_profit_1": round(take_profits[0], round_decimal_places),
+            "take_profit_2": round(take_profits[1], round_decimal_places),
+            "take_profit_3": round(take_profits[2], round_decimal_places),
         }
 
     @staticmethod

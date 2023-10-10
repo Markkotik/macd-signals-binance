@@ -31,17 +31,21 @@ class TelegramNotifier(Notifier):
 
     @staticmethod
     def _generate_message(signal: Signal) -> str:
-        """Generates a fun and readable notification message based on the provided signal."""
+        """Generates a concise and professional notification message based on the provided signal."""
         emoji_map = {
             "buy": "📈",
             "sell": "📉"
         }
 
+        direction_emoji = emoji_map.get(signal.direction, 'ℹ️')
+
         return (
-            f"🚀 Binance Spot Alert! 🚀\n"
-            f"🔹 Symbol: #{signal.symbol}\n"
-            f"🔸 Indicator: {signal.indicator_name}\n"
-            f"{emoji_map.get(signal.direction, 'ℹ️')} Direction: {signal.direction}"
+            f"🚀 Binance Alert: #{signal.symbol}\n"
+            f"{direction_emoji} {signal.direction.capitalize()} at {signal.entry_price}\n"
+            f"SL: {signal.stop_loss}\n"
+            f"TP1: {signal.take_profit_1}\n"
+            f"TP2: {signal.take_profit_2}\n"
+            f"TP3: {signal.take_profit_3}\n"
         )
 
     def _send_image(self, message: str, image_path: str) -> None:
