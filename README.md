@@ -6,7 +6,7 @@ In addition to identifying potential buy/sell opportunities based on the MACD ch
 
 Notifications are promptly sent via Telegram.
 
-![img.png](imgs_for_readme%2Fimg.png)
+![img_1.png](imgs_for_readme%2Fimg_1.png)
 
 ## Prerequisites
 
