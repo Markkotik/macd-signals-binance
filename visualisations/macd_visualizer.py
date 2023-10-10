@@ -39,8 +39,9 @@ class MACDVisualization(AbstractVisualization):
         self._plot_price_data(data, axes[0], signal_model)
         self._plot_macd_data(data, axes[1])
 
-        # Mark buy/sell signals on the plot
+        # Mark buy/sell signals & levels on the plot
         self._mark_signals(data, axes[0], signal_model)
+        self._plot_levels(axes[0], signal_model)
 
         # Adjust axes and legend
         for ax in axes:
@@ -86,6 +87,16 @@ class MACDVisualization(AbstractVisualization):
         ax.set_title(f'{signal_model.symbol} Price & MACD Visualization')
         ax.set_ylabel('Price')
         ax.set_xlabel('Time')
+
+    @staticmethod
+    def _plot_levels(ax, signal_model: Signal) -> None:
+        """
+        Plots the stop_loss, take_profit_1, take_profit_2, and take_profit_3 levels.
+        """
+        ax.axhline(signal_model.stop_loss, color='red', linestyle='--', label='Stop Loss')
+        ax.axhline(signal_model.take_profit_1, color='green', linestyle='--', label='Take Profit 1')
+        ax.axhline(signal_model.take_profit_2, color='orange', linestyle='--', label='Take Profit 2')
+        ax.axhline(signal_model.take_profit_3, color='purple', linestyle='--', label='Take Profit 3')
 
     @staticmethod
     def _plot_macd_data(data: pd.DataFrame, ax) -> None:
